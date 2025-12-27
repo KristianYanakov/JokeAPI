@@ -64,6 +64,28 @@ app.post('/joke', (req, res)=>{
 
 //5. PUT a joke
 
+app.put('/joke/:id', (req, res)=>{
+  const jokeId = parseInt(req.params.id);
+  const type = req.body.type;
+  const text = req.body.text;
+
+  let jokeFound = false;
+  if(!type || !text){
+    return res.status(400).json({message: "Type and text are required"});
+  }
+  for(let jokeItem of jokes){
+    if(jokeItem.id === jokeId){
+      jokeItem.jokeType = type;
+      jokeItem.jokeText = text;
+      jokeFound = true;
+      return res.json(jokeItem);
+    }
+  }
+  if(!jokeFound){
+    return res.status(404).json({message: "Joke not found"});
+  }
+});
+
 //6. PATCH a joke
 
 //7. DELETE Specific joke
